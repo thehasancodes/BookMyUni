@@ -3,52 +3,31 @@ import { Routes, Route } from "react-router-dom";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import MockDashboard from "../dev/MockDashboard";
+import Home from "../pages/Home";
+import Movies from "../pages/Movies";
+import MovieDetails from "../pages/MovieDetails";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleRoute from "./RoleRoute";
-
 import { ROLES } from "../utils/roles";
-
-/* ============================= */
-/* APPLICATION ROUTES */
-/* ============================= */
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ============================= */}
-      {/* PUBLIC ROUTES */}
-      {/* ============================= */}
-
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* ============================= */}
-      {/* PROTECTED ROUTES */}
-      {/* ============================= */}
-
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dev-auth-test" element={<MockDashboard />} />
-        {/*remove the above line its just for testing purposes */}
-        {/* Future authenticated routes go here */}
-      </Route>
-
-      {/* ============================= */}
-      {/* ADMIN ROUTES */}
-      {/* ============================= */}
+      {/* Phase 2 public show-browser routes */}
+      <Route path="/movies" element={<Movies />} />
+      <Route path="/movies/:showId" element={<MovieDetails />} />
 
       <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN]} />}>
-        {/* Future admin routes go here */}
+        {/* Future admin routes */}
       </Route>
 
-      {/* ============================= */}
-      {/* ORGANIZER ROUTES */}
-      {/* ============================= */}
-
       <Route element={<RoleRoute allowedRoles={[ROLES.ORGANIZER]} />}>
-        {/* Future organizer routes go here */}
+        {/* Future organizer routes */}
       </Route>
     </Routes>
   );

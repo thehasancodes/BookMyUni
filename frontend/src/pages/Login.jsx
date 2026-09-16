@@ -51,7 +51,7 @@ const Login = () => {
 
       mockLogin(mockUser);
 
-      navigate("/dev-auth-test"); //*remove dev-auth-test later* */ Redirect to the home page after successful login
+      navigate("/"); //*remove dev-auth-test later* */ Redirect to the home page after successful login //redirected
     } finally {
       setLoading(false);
     }
