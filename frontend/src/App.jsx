@@ -1,11 +1,21 @@
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+
+import { AuthProvider } from "./context/AuthContext";
+import AppRoutes from "./routes/AppRoutes";
+
+/* ============================= */
+/* APP */
+/* ============================= */
+
 function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-950">
-      <h1 className="text-4xl font-bold text-white">
-        BookMyUni 🎬
-      </h1>
-    </div>
-  )
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
