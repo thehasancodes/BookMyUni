@@ -1,21 +1,21 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 
-import { AuthProvider } from "./context/AuthContext";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 import AppRoutes from "./routes/AppRoutes";
 
-/* ============================= */
-/* APP */
-/* ============================= */
-
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <div className="flex min-h-screen flex-col bg-gray-950">
+      <Navbar />
+
+      <main className="flex-1">
         <AppRoutes />
-      </AuthProvider>
-    </BrowserRouter>
+      </main>
+
+      <Footer />
+    </div>
   );
-}
+};
 
 export default App;

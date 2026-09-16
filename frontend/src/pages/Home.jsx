@@ -1,56 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import useAuth from "../hooks/useAuth";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user, isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-950 px-4 py-10">
+    <div className="min-h-[calc(100vh-128px)] bg-gray-950 px-4 py-12">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col gap-4 border-b border-gray-800 pb-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-purple-400">
-              BookMyUni
+        {isAuthenticated && (
+          <div className="mb-8 rounded-2xl border border-purple-500/30 bg-purple-500/10 p-6">
+            <p className="text-sm font-medium text-purple-400">
+              Logged in successfully
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold text-white">
-              {isAuthenticated
-                ? `Welcome, ${user?.name}`
-                : "Welcome to BookMyUni"}
+            <h1 className="mt-2 text-3xl font-bold text-white">
+              Welcome back, {user?.name}
             </h1>
-          </div>
-
-          {isAuthenticated ? (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="rounded-lg bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700"
-            >
-              Logout
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="rounded-lg bg-purple-600 px-4 py-2 font-semibold text-white transition hover:bg-purple-700"
-            >
-              Login
-            </button>
-          )}
-        </div>
-
-        {isAuthenticated && (
-          <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-            <h2 className="text-xl font-semibold text-white">
-              Your login details
-            </h2>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-3">
               <Detail label="Name" value={user?.name} />
@@ -60,26 +28,40 @@ const Home = () => {
           </div>
         )}
 
-        <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-8">
-          <p className="text-sm font-semibold text-purple-400">NOW SHOWING</p>
+        {!isAuthenticated && (
+          <div className="mb-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
+            <h1 className="text-3xl font-bold text-white">
+              Welcome to BookMyUni
+            </h1>
 
-          <h2 className="mt-2 text-3xl font-bold text-white">
-            Find your next movie.
+            <p className="mt-2 text-gray-400">
+              Login to book seats and manage your bookings.
+            </p>
+          </div>
+        )}
+
+        <section className="rounded-3xl border border-gray-800 bg-linear-to-br from-purple-800 via-purple-700 to-pink-600 p-8 shadow-xl sm:p-12">
+          <p className="text-sm font-semibold uppercase tracking-wider text-purple-100">
+            Now showing
+          </p>
+
+          <h2 className="mt-3 max-w-2xl text-4xl font-bold text-white sm:text-5xl">
+            Find your next movie night.
           </h2>
 
-          <p className="mt-3 max-w-xl text-gray-400">
-            Browse active shows, filter by date or venue, and check seat
+          <p className="mt-5 max-w-xl text-lg leading-8 text-purple-100">
+            Browse active shows, filter by date or venue, and see current seat
             availability before booking.
           </p>
 
           <button
             type="button"
             onClick={() => navigate("/movies")}
-            className="mt-6 rounded-lg bg-purple-600 px-5 py-3 font-semibold text-white transition hover:bg-purple-700"
+            className="mt-8 rounded-lg bg-white px-6 py-3 font-semibold text-purple-700 transition hover:bg-purple-100"
           >
             Explore Shows
           </button>
-        </div>
+        </section>
       </div>
     </div>
   );
@@ -87,7 +69,7 @@ const Home = () => {
 
 const Detail = ({ label, value }) => {
   return (
-    <div className="rounded-lg bg-gray-950 p-4">
+    <div className="rounded-xl border border-gray-800 bg-gray-950 p-4">
       <p className="text-sm text-gray-500">{label}</p>
       <p className="mt-1 font-medium text-gray-200">{value || "-"}</p>
     </div>
