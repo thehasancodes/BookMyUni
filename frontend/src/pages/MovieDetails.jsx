@@ -26,8 +26,13 @@ const MovieDetails = () => {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white">Show unavailable</h1>
-          <p className="mt-2 text-gray-400">{error}</p>
+          <h1 className="text-2xl font-bold text-white">
+            Show unavailable
+          </h1>
+
+          <p className="mt-2 text-gray-400">
+            {error}
+          </p>
 
           <Link
             to="/movies"
@@ -60,7 +65,9 @@ const MovieDetails = () => {
 
         <div className="mt-5 overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 shadow-xl">
           <div className="bg-linear-to-br from-purple-700 via-purple-600 to-pink-500 p-8">
-            <p className="text-purple-100">{show.genre}</p>
+            <p className="text-purple-100">
+              {show.genre}
+            </p>
 
             <h1 className="mt-2 text-4xl font-bold text-white">
               {show.title}
@@ -81,12 +88,17 @@ const MovieDetails = () => {
                 <Info label="Date" value={show.date} />
                 <Info label="Time" value={show.time} />
                 <Info label="Venue" value={show.venue} />
-                <Info label="Ticket price" value={`₹${show.price}`} />
+                <Info
+                  label="Ticket price"
+                  value={`₹${show.price}`}
+                />
               </div>
             </div>
 
             <aside className="h-fit rounded-xl border border-gray-800 bg-gray-950 p-5">
-              <p className="text-sm text-gray-400">Current availability</p>
+              <p className="text-sm text-gray-400">
+                Current availability
+              </p>
 
               <p className="mt-2 text-3xl font-bold text-green-400">
                 {show.availableSeats}
@@ -96,17 +108,12 @@ const MovieDetails = () => {
                 of {show.totalSeats} seats available
               </p>
 
-              <button
-                type="button"
-                disabled
-                className="mt-6 w-full cursor-not-allowed rounded-lg bg-purple-600/50 py-3 font-semibold text-white opacity-70"
+              <Link
+                to={`/movies/${showId}/seats`}
+                className="mt-6 block w-full rounded-lg bg-purple-600 py-3 text-center font-semibold text-white transition hover:bg-purple-700"
               >
                 Select Seats
-              </button>
-
-              <p className="mt-3 text-center text-xs text-gray-500">
-                Seat selection will be added in Phase 3.
-              </p>
+              </Link>
             </aside>
           </div>
         </div>
@@ -118,8 +125,13 @@ const MovieDetails = () => {
 const Info = ({ label, value }) => {
   return (
     <div>
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="mt-1 font-medium text-gray-200">{value}</p>
+      <p className="text-sm text-gray-500">
+        {label}
+      </p>
+
+      <p className="mt-1 font-medium text-gray-200">
+        {value}
+      </p>
     </div>
   );
 };

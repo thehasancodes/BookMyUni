@@ -6,6 +6,7 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Movies from "../pages/Movies";
 import MovieDetails from "../pages/MovieDetails";
+import SeatSelection from "../pages/SeatSelection";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleRoute from "./RoleRoute";
@@ -21,6 +22,12 @@ const AppRoutes = () => {
       {/* Phase 2 public show-browser routes */}
       <Route path="/movies" element={<Movies />} />
       <Route path="/movies/:showId" element={<MovieDetails />} />
+
+      {/* Phase 3 seat selection route */}
+      <Route
+        path="/movies/:showId/seats"
+        element={<SeatSelection />}
+      />
 
       <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN]} />}>
         {/* Future admin routes */}
