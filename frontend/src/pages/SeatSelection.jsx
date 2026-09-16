@@ -1,25 +1,37 @@
 import { useState } from "react"
 import SeatGrid from "../components/booking/SeatGrid"
 import HoldTimer from "../components/booking/HoldTimer"
+import SeatCountModal from "../components/booking/SeatCountModal"
 
 function SeatSelection() {
   const [selectedSeats, setSelectedSeats] = useState([])
+  const [selectedCount, setSelectedCount] = useState(null)
+  const [showSeatCountModal, setShowSeatCountModal] = useState(true)
+
+  const handleSeatCountContinue = () => {
+    setSelectedSeats([])
+    setShowSeatCountModal(false)
+  }
 
   const handleSeatSelect = (seat) => {
-    setSelectedSeats((currentSeats) => {
-      const alreadySelected = currentSeats.some(
-        (selectedSeat) => selectedSeat.id === seat.id
+  setSelectedSeats((currentSeats) => {
+    const alreadySelected = currentSeats.some(
+      (selectedSeat) => selectedSeat.id === seat.id
+    )
+
+    if (alreadySelected) {
+      return currentSeats.filter(
+        (selectedSeat) => selectedSeat.id !== seat.id
       )
+    }
 
-      if (alreadySelected) {
-        return currentSeats.filter(
-          (selectedSeat) => selectedSeat.id !== seat.id
-        )
-      }
+    if (currentSeats.length >= selectedCount) {
+      return currentSeats
+    }
 
-      return [...currentSeats, seat]
-    })
-  }
+    return [...currentSeats, seat]
+  })
+}
 
   const handleHoldExpire = () => {
     setSelectedSeats([])
@@ -106,6 +118,15 @@ function SeatSelection() {
 
         </div>
       </div>
+
+      {/* Seat Count Modal */}
+      {showSeatCountModal && (
+        <SeatCountModal
+          selectedCount={selectedCount}
+          onSelectCount={setSelectedCount}
+          onContinue={handleSeatCountContinue}
+        />
+      )}
 
     </div>
   )
