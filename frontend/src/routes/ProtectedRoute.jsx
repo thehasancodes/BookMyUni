@@ -1,5 +1,10 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+
 import useAuth from "../hooks/useAuth";
 
 /* ============================= */
@@ -8,13 +13,18 @@ import useAuth from "../hooks/useAuth";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
 
   /* ============================= */
   /* LOADING STATE */
   /* ============================= */
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-950">
+        <p className="text-gray-400">Loading...</p>
+      </div>
+    );
   }
 
   /* ============================= */
@@ -22,7 +32,13 @@ const ProtectedRoute = () => {
   /* ============================= */
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location.pathname }}
+      />
+    );
   }
 
   /* ============================= */

@@ -62,9 +62,7 @@ const MovieDetails = () => {
           <div className="bg-linear-to-br from-purple-700 via-purple-600 to-pink-500 p-8">
             <p className="text-purple-100">{show.genre}</p>
 
-            <h1 className="mt-2 text-4xl font-bold text-white">
-              {show.title}
-            </h1>
+            <h1 className="mt-2 text-4xl font-bold text-white">{show.title}</h1>
           </div>
 
           <div className="grid gap-8 p-8 md:grid-cols-[1fr_260px]">
@@ -73,9 +71,7 @@ const MovieDetails = () => {
                 About this show
               </h2>
 
-              <p className="mt-3 leading-7 text-gray-400">
-                {show.description}
-              </p>
+              <p className="mt-3 leading-7 text-gray-400">{show.description}</p>
 
               <div className="mt-8 grid gap-5 sm:grid-cols-2">
                 <Info label="Date" value={show.date} />
@@ -96,16 +92,22 @@ const MovieDetails = () => {
                 of {show.totalSeats} seats available
               </p>
 
-              <button
+              {/* <button
                 type="button"
-                disabled
-                className="mt-6 w-full cursor-not-allowed rounded-lg bg-purple-600/50 py-3 font-semibold text-white opacity-70"
+                onClick={() => navigate("/seat-selection")}
+                className="mt-6 w-full rounded-lg bg-purple-600/50 py-3 font-semibold text-white opacity-70"
               >
                 Select Seats
-              </button>
+              </button> */}
+              <Link
+                to={"/seat-selection"}
+                className="mt-3 block rounded-lg bg-purple-600 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-purple-700"
+              >
+                Select Seats
+              </Link>
 
               <p className="mt-3 text-center text-xs text-gray-500">
-                Seat selection will be added in Phase 3.
+                Quick seats are running out !!!
               </p>
             </aside>
           </div>
