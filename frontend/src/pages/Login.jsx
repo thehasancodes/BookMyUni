@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 import useAuth from "../hooks/useAuth";
 import { MOCK_USERS } from "../dev/mockAuth";
+import { ROLES } from "../utils/roles";
 
 /* ============================= */
 /* LOGIN PAGE */
@@ -31,14 +32,11 @@ const Login = () => {
 
     try {
       /*
-        TEMPORARY DEVELOPMENT LOGIN
+      TEMPORARY DEVELOPMENT LOGIN
 
-        This uses mock users until the backend API
-        is connected.
-
-        Remove this block when real API authentication
-        is ready.
-      */
+      This uses mock users until the backend API
+      is connected.
+    */
 
       const mockUser = MOCK_USERS.find((user) => user.email === email);
 
@@ -51,7 +49,25 @@ const Login = () => {
 
       mockLogin(mockUser);
 
-      navigate("/"); //*remove dev-auth-test later* */ Redirect to the home page after successful login //redirected
+      /* ============================= */
+      /* ROLE BASED REDIRECT */
+      /* ============================= */
+
+      if (mockUser.role === "ORGANIZER") {
+        navigate("/organizer/dashboard");
+        return;
+      }
+
+      if (mockUser.role === "ADMIN") {
+        navigate("/admin/dashboard");
+        return;
+      }
+
+      /* ============================= */
+      /* CUSTOMER REDIRECT */
+      /* ============================= */
+
+      navigate("/");
     } finally {
       setLoading(false);
     }
@@ -111,6 +127,7 @@ const Login = () => {
           {/* ============================= */}
           {/* PASSWORD */}
           {/* ============================= */}
+
           <div>
             <label
               htmlFor="password"
@@ -140,6 +157,7 @@ const Login = () => {
               </button>
             </div>
           </div>
+
           {/* ============================= */}
           {/* LOGIN BUTTON */}
           {/* ============================= */}

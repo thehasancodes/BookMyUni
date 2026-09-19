@@ -1,3 +1,7 @@
+/* ============================= */
+/* MOCK SHOW DATA */
+/* ============================= */
+
 const MOCK_SHOWS = [
   {
     id: "1",
@@ -40,10 +44,18 @@ const MOCK_SHOWS = [
   },
 ];
 
+/* ============================= */
+/* MOCK REQUEST DELAY */
+/* ============================= */
+
 const delay = () =>
   new Promise((resolve) => {
     setTimeout(resolve, 300);
   });
+
+/* ============================= */
+/* GET ACTIVE SHOWS */
+/* ============================= */
 
 export const getActiveShows = async (filters = {}) => {
   await delay();
@@ -60,14 +72,13 @@ export const getActiveShows = async (filters = {}) => {
     const matchesDate = !filters.date || show.date === filters.date;
     const matchesVenue = !filters.venue || show.venue === filters.venue;
 
-    return (
-      show.isPublished &&
-      matchesSearch &&
-      matchesDate &&
-      matchesVenue
-    );
+    return show.isPublished && matchesSearch && matchesDate && matchesVenue;
   });
 };
+
+/* ============================= */
+/* GET SHOW BY ID */
+/* ============================= */
 
 export const getShowById = async (showId) => {
   await delay();
@@ -83,7 +94,70 @@ export const getShowById = async (showId) => {
   return show;
 };
 
+/* ============================= */
+/* GET FILTER OPTIONS */
+/* ============================= */
+
 export const getFilterOptions = () => ({
   dates: [...new Set(MOCK_SHOWS.map((show) => show.date))],
   venues: [...new Set(MOCK_SHOWS.map((show) => show.venue))],
 });
+
+/* ============================= */
+/* CREATE SHOW */
+/* ============================= */
+
+/*
+  MOCK IMPLEMENTATION
+
+  This allows Admin/Organizer pages to be
+  tested before the backend API is available.
+
+  Later this function can be replaced with
+  the real POST /shows API request without
+  changing the page component.
+*/
+
+export const createShow = async (showData) => {
+  await delay();
+
+  const totalSeats = Number(showData.totalSeats);
+
+  if (!showData.title?.trim()) {
+    throw new Error("Show title is required.");
+  }
+
+  if (!showData.venue?.trim()) {
+    throw new Error("Venue is required.");
+  }
+
+  if (!showData.date) {
+    throw new Error("Date is required.");
+  }
+
+  if (!showData.time) {
+    throw new Error("Time is required.");
+  }
+
+  if (!Number.isFinite(totalSeats) || totalSeats <= 0) {
+    throw new Error("Seat count must be greater than 0.");
+  }
+
+  const newShow = {
+    id: String(Date.now()),
+    title: showData.title.trim(),
+    date: showData.date,
+    time: showData.time,
+    venue: showData.venue.trim(),
+    price: Number(showData.price) || 0,
+    availableSeats: totalSeats,
+    totalSeats,
+    genre: showData.genre?.trim() || "",
+    isPublished: true,
+    description: showData.description?.trim() || "",
+  };
+
+  MOCK_SHOWS.push(newShow);
+
+  return newShow;
+};
