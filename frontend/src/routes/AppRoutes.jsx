@@ -1,11 +1,15 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Movies from "../pages/Movies";
 import MovieDetails from "../pages/MovieDetails";
+import SeatSelection from "../pages/SeatSelection";
+import Checkout from "../pages/Checkout";
+import BookingSuccess from "../pages/BookingSuccess";
+import MyBookings from "../pages/MyBookings";
 
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminCreateShow from "../pages/admin/CreateShow";
@@ -27,6 +31,10 @@ import { ROLES } from "../utils/roles";
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* ============================= */}
+      {/* PUBLIC ROUTES */}
+      {/* ============================= */}
+
       {/* ============================= */}
       {/* PUBLIC ROUTES */}
       {/* ============================= */}
