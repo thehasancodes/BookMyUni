@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { getShowById } from "../services/showService";
 
@@ -21,6 +22,8 @@ const MovieDetails = () => {
 
     loadShow();
   }, [showId]);
+
+  const navigate = useNavigate();
 
   if (error) {
     return (
@@ -99,12 +102,17 @@ const MovieDetails = () => {
               >
                 Select Seats
               </button> */}
-              <Link
-                to={"/seat-selection"}
-                className="mt-3 block rounded-lg bg-purple-600 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-purple-700"
+              <button
+                type="button"
+                onClick={() =>
+                  navigate("/seat-selection", {
+                    state: { show },
+                  })
+                }
+                className="mt-6 w-full rounded-lg bg-purple-600 py-3 font-semibold text-white transition hover:bg-purple-700"
               >
                 Select Seats
-              </Link>
+              </button>
 
               <p className="mt-3 text-center text-xs text-gray-500">
                 Quick seats are running out !!!

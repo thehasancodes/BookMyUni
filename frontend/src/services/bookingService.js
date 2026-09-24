@@ -16,8 +16,7 @@ const expireHeldBookings = () => {
 
   const updatedBookings = readBookings().map((booking) => {
     const isExpired =
-      booking.status === "HELD" &&
-      new Date(booking.expiresAt) <= now;
+      booking.status === "HELD" && new Date(booking.expiresAt) <= now;
 
     return isExpired
       ? {
@@ -32,16 +31,19 @@ const expireHeldBookings = () => {
   return updatedBookings;
 };
 
-export const createBooking = async ({ customerId, show, selectedSeats }) => {
+export const createBooking = async ({
+  customerId,
+  show,
+  selectedSeats,
+}) => {
   if (!customerId || !show || selectedSeats.length === 0) {
     throw new Error("Show and at least one seat are required.");
   }
 
-  const totalAmount = selectedSeats.length * show.price;
-
   const booking = {
-    id: `BK-${Date.now()}`,
+    id: `BK-${crypto.randomUUID()}`,
     customerId,
+
     show: {
       id: show.id,
       title: show.title,
@@ -50,12 +52,17 @@ export const createBooking = async ({ customerId, show, selectedSeats }) => {
       venue: show.venue,
       price: show.price,
     },
-    seats: selectedSeats,
-    totalAmount,
+
+    seats: selectedSeats.map((seat) => seat.id),
+
+    totalAmount: selectedSeats.length * show.price,
+
     status: "HELD",
+
     createdAt: new Date().toISOString(),
+
     expiresAt: new Date(
-      Date.now() + HOLD_DURATION_MINUTES * 60 * 1000,
+      Date.now() + 10 * 60 * 1000,
     ).toISOString(),
   };
 
@@ -85,8 +92,7 @@ export const getMyBookings = async (customerId) => {
     .filter((booking) => String(booking.customerId) === String(customerId))
     .sort(
       (firstBooking, secondBooking) =>
-        new Date(secondBooking.createdAt) -
-        new Date(firstBooking.createdAt),
+        new Date(secondBooking.createdAt) - new Date(firstBooking.createdAt),
     );
 };
 
