@@ -21,7 +21,6 @@ const MyBookings = () => {
     try {
       const customerBookings = await getMyBookings(user.id);
 
-      // Only show bookings completed through the Book Show button.
       const completedBookings = customerBookings.filter(
         (booking) => booking.status === "CONFIRMED",
       );
@@ -121,7 +120,7 @@ const MyBookings = () => {
                   </p>
 
                   <p className="mt-1 font-semibold text-white">
-                    Total paid: ₹{booking.totalAmount}
+                    Total: ₹{booking.totalAmount}
                   </p>
                 </div>
 

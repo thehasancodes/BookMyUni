@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  ArrowLeft,
   CalendarDays,
   Clock3,
   Edit3,
@@ -13,39 +14,32 @@ import {
   X,
 } from "lucide-react";
 
-import {
-  getOrganizerShows,
-  deleteOrganizerShow,
-} from "../../services/organizerService";
+import { getAdminShows, deleteAdminShow } from "../../services/adminService";
 
 /* ============================= */
-/* ORGANIZER SHOWS */
+/* ADMIN SHOWS */
 /* ============================= */
 
 const Shows = () => {
   const navigate = useNavigate();
 
   /* ============================= */
-  /* MOCK SHOW DATA */
+  /* SHOW STATE */
   /* ============================= */
 
-  /*
-    Temporary frontend data.
-
-    Later this will come from:
-    showService.js -> Backend API
-
-    The backend should return only shows
-    belonging to the logged-in organizer.
-  */
-
   const [shows, setShows] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   /* ============================= */
-  /* LOAD ORGANIZER SHOWS */
+  /* FILTER STATE */
+  /* ============================= */
+
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  /* ============================= */
+  /* LOAD SHOWS */
   /* ============================= */
 
   useEffect(() => {
@@ -54,11 +48,11 @@ const Shows = () => {
         setLoading(true);
         setError("");
 
-        const organizerShows = await getOrganizerShows();
+        const adminShows = await getAdminShows();
 
-        setShows(organizerShows);
+        setShows(adminShows);
       } catch (requestError) {
-        setError(requestError?.message || "Unable to load organizer shows.");
+        setError(requestError?.message || "Unable to load shows.");
       } finally {
         setLoading(false);
       }
@@ -66,13 +60,6 @@ const Shows = () => {
 
     loadShows();
   }, []);
-
-  /* ============================= */
-  /* FILTER STATE */
-  /* ============================= */
-
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
 
   /* ============================= */
   /* FILTER SHOWS */
@@ -122,7 +109,7 @@ const Shows = () => {
     try {
       setError("");
 
-      await deleteOrganizerShow(showId);
+      await deleteAdminShow(showId);
 
       setShows((currentShows) =>
         currentShows.filter((show) => show.id !== showId),
@@ -142,34 +129,29 @@ const Shows = () => {
         <div className="mx-auto max-w-7xl px-6 py-7">
           <button
             type="button"
-            onClick={() => navigate("/organizer/dashboard")}
-            className="mb-5 text-sm text-gray-400 transition hover:text-white"
+            onClick={() => navigate("/admin/dashboard")}
+            className="mb-5 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white"
           >
-            ← Back to Dashboard
+            <ArrowLeft size={16} />
+            Back to Dashboard
           </button>
 
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
-              <p className="text-sm font-medium text-purple-400">
-                Organizer Panel
-              </p>
+              <p className="text-sm font-medium text-purple-400">Admin Panel</p>
 
               <h1 className="mt-1 text-3xl font-bold tracking-tight">
                 Manage Shows
               </h1>
 
               <p className="mt-2 text-sm text-gray-400">
-                Create, manage and monitor your movie shows.
+                Create, manage and monitor all movie shows.
               </p>
             </div>
 
-            {/* ============================= */}
-            {/* CREATE SHOW */}
-            {/* ============================= */}
-
             <button
               type="button"
-              onClick={() => navigate("/organizer/shows/create")}
+              onClick={() => navigate("/admin/shows/create")}
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-purple-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
             >
               <Plus size={18} />
@@ -183,33 +165,33 @@ const Shows = () => {
       {/* MAIN CONTENT */}
       {/* ============================= */}
 
-      {/* ============================= */}
-      {/* LOADING / ERROR */}
-      {/* ============================= */}
-
-      {loading && (
-        <div className="mb-6 rounded-xl border border-gray-800 bg-gray-900 px-5 py-4 text-sm text-gray-400">
-          Loading organizer shows...
-        </div>
-      )}
-
-      {error && (
-        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-400">
-          {error}
-        </div>
-      )}
-
       <main className="mx-auto max-w-7xl px-6 py-8">
+        {/* ============================= */}
+        {/* LOADING */}
+        {/* ============================= */}
+
+        {loading && (
+          <div className="mb-6 rounded-xl border border-gray-800 bg-gray-900 px-5 py-4 text-sm text-gray-400">
+            Loading shows...
+          </div>
+        )}
+
+        {/* ============================= */}
+        {/* ERROR */}
+        {/* ============================= */}
+
+        {error && (
+          <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
         {/* ============================= */}
         {/* FILTER BAR */}
         {/* ============================= */}
 
         <section className="rounded-2xl border border-gray-800 bg-gray-900 p-5">
           <div className="flex flex-col gap-4 lg:flex-row">
-            {/* ============================= */}
-            {/* SEARCH */}
-            {/* ============================= */}
-
             <div className="relative flex-1">
               <Search
                 size={18}
@@ -236,10 +218,6 @@ const Shows = () => {
               )}
             </div>
 
-            {/* ============================= */}
-            {/* STATUS FILTER */}
-            {/* ============================= */}
-
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
@@ -257,15 +235,13 @@ const Shows = () => {
         {/* SHOW COUNT */}
         {/* ============================= */}
 
-        <div className="mt-6 flex items-center justify-between">
-          <div>
-            <h2 className="font-semibold">Your Shows</h2>
+        <div className="mt-6">
+          <h2 className="font-semibold">All Shows</h2>
 
-            <p className="mt-1 text-sm text-gray-500">
-              {filteredShows.length} show
-              {filteredShows.length !== 1 ? "s" : ""} found
-            </p>
-          </div>
+          <p className="mt-1 text-sm text-gray-500">
+            {filteredShows.length} show
+            {filteredShows.length !== 1 ? "s" : ""} found
+          </p>
         </div>
 
         {/* ============================= */}
@@ -286,9 +262,7 @@ const Shows = () => {
                 key={show.id}
                 className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 transition hover:border-gray-700"
               >
-                {/* ============================= */}
                 {/* CARD HEADER */}
-                {/* ============================= */}
 
                 <div className="border-b border-gray-800 p-5">
                   <div className="flex items-start justify-between gap-4">
@@ -314,9 +288,7 @@ const Shows = () => {
                   </div>
                 </div>
 
-                {/* ============================= */}
                 {/* SHOW INFORMATION */}
-                {/* ============================= */}
 
                 <div className="grid gap-4 p-5 sm:grid-cols-2">
                   <div className="flex items-start gap-3">
@@ -327,7 +299,6 @@ const Shows = () => {
 
                     <div>
                       <p className="text-xs text-gray-500">Date</p>
-
                       <p className="mt-1 text-sm text-gray-300">{show.date}</p>
                     </div>
                   </div>
@@ -340,7 +311,6 @@ const Shows = () => {
 
                     <div>
                       <p className="text-xs text-gray-500">Time</p>
-
                       <p className="mt-1 text-sm text-gray-300">{show.time}</p>
                     </div>
                   </div>
@@ -353,21 +323,17 @@ const Shows = () => {
 
                     <div>
                       <p className="text-xs text-gray-500">Venue</p>
-
                       <p className="mt-1 text-sm text-gray-300">{show.venue}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* ============================= */}
-                {/* SEAT INFORMATION */}
-                {/* ============================= */}
+                {/* SEATS */}
 
                 <div className="border-t border-gray-800 px-5 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Users size={17} className="text-gray-500" />
-
                       <span className="text-sm text-gray-400">Seats</span>
                     </div>
 
@@ -387,14 +353,11 @@ const Shows = () => {
 
                   <div className="mt-2 flex justify-between text-xs text-gray-500">
                     <span>{availableSeats} available</span>
-
                     <span>{occupancy}% booked</span>
                   </div>
                 </div>
 
-                {/* ============================= */}
                 {/* PRICE */}
-                {/* ============================= */}
 
                 <div className="border-t border-gray-800 px-5 py-4">
                   <div className="flex items-center justify-between">
@@ -404,13 +367,12 @@ const Shows = () => {
                   </div>
                 </div>
 
-                {/* ============================= */}
                 {/* ACTIONS */}
-                {/* ============================= */}
 
                 <div className="flex gap-3 border-t border-gray-800 p-5">
                   <button
                     type="button"
+                    onClick={() => navigate(`/admin/shows/${show.id}/edit`)}
                     className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-300 transition hover:border-gray-600 hover:bg-gray-750 hover:text-white"
                   >
                     <Edit3 size={16} />
@@ -435,7 +397,7 @@ const Shows = () => {
         {/* EMPTY STATE */}
         {/* ============================= */}
 
-        {filteredShows.length === 0 && (
+        {!loading && filteredShows.length === 0 && (
           <section className="mt-5 rounded-2xl border border-gray-800 bg-gray-900 px-6 py-16 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-gray-500">
               <Film size={22} />
@@ -444,7 +406,7 @@ const Shows = () => {
             <h3 className="mt-4 font-semibold">No shows found</h3>
 
             <p className="mt-1 text-sm text-gray-500">
-              Try changing your search or filter.
+              Try changing your search or status filter.
             </p>
           </section>
         )}
@@ -455,9 +417,8 @@ const Shows = () => {
 
         <div className="mt-6 rounded-xl border border-gray-800 bg-gray-900 px-5 py-4">
           <p className="text-xs text-gray-500">
-            Development mode: shows are currently using temporary frontend data.
-            API integration will replace this data when the backend is
-            connected.
+            Development mode: show data is currently using temporary frontend
+            data. Backend integration will replace this data later.
           </p>
         </div>
       </main>

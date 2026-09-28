@@ -11,44 +11,90 @@ import Checkout from "../pages/Checkout";
 import BookingSuccess from "../pages/BookingSuccess";
 import MyBookings from "../pages/MyBookings";
 
+import AdminDashboard from "../pages/admin/Dashboard";
+import AdminCreateShow from "../pages/admin/CreateShow";
+import AdminBookings from "../pages/admin/Bookings";
+import AdminShows from "../pages/admin/Shows";
+
+import OrganizerDashboard from "../pages/organizer/Dashboard";
+import OrganizerShows from "../pages/organizer/Shows";
+import OrganizerCreateShow from "../pages/organizer/CreateShow";
+import OrganizerBookings from "../pages/organizer/Bookings";
+
 import ProtectedRoute from "./ProtectedRoute";
+import RoleRoute from "./RoleRoute";
+import { ROLES } from "../utils/roles";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ============================= */}
-      {/* PUBLIC ROUTES */}
-      {/* ============================= */}
-
+      {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
-      {/* Phase 2: Show Browser */}
       <Route path="/movies" element={<Movies />} />
       <Route path="/movies/:showId" element={<MovieDetails />} />
 
-      {/* ============================= */}
-      {/* PROTECTED CUSTOMER ROUTES */}
-      {/* ============================= */}
-
+      {/* Customer Booking Routes */}
       <Route element={<ProtectedRoute />}>
-        {/* Phase 3: Seat Selection */}
         <Route path="/seat-selection" element={<SeatSelection />} />
-
-        {/* Phase 4: Booking Flow */}
         <Route path="/checkout/:bookingId" element={<Checkout />} />
+
         <Route
           path="/booking-success/:bookingId"
           element={<BookingSuccess />}
         />
+
         <Route path="/my-bookings" element={<MyBookings />} />
       </Route>
 
-      {/* ============================= */}
-      {/* UNKNOWN ROUTE */}
-      {/* ============================= */}
+      {/* Organizer Routes */}
+      <Route element={<RoleRoute allowedRoles={[ROLES.ORGANIZER]} />}>
+        <Route
+          path="/organizer/dashboard"
+          element={<OrganizerDashboard />}
+        />
 
+        <Route
+          path="/organizer/shows"
+          element={<OrganizerShows />}
+        />
+
+        <Route
+          path="/organizer/shows/create"
+          element={<OrganizerCreateShow />}
+        />
+
+        <Route
+          path="/organizer/bookings"
+          element={<OrganizerBookings />}
+        />
+      </Route>
+
+      {/* Admin Routes */}
+      <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN]} />}>
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/admin/shows"
+          element={<AdminShows />}
+        />
+
+        <Route
+          path="/admin/shows/create"
+          element={<AdminCreateShow />}
+        />
+
+        <Route
+          path="/admin/bookings"
+          element={<AdminBookings />}
+        />
+      </Route>
+
+      {/* Unknown URL */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

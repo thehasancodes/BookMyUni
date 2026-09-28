@@ -7,17 +7,9 @@ import {
 
 import useAuth from "../hooks/useAuth";
 
-/* ============================= */
-/* PROTECTED ROUTE */
-/* ============================= */
-
 const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
-
-  /* ============================= */
-  /* LOADING STATE */
-  /* ============================= */
 
   if (loading) {
     return (
@@ -26,10 +18,6 @@ const ProtectedRoute = () => {
       </div>
     );
   }
-
-  /* ============================= */
-  /* AUTHENTICATION CHECK */
-  /* ============================= */
 
   if (!isAuthenticated) {
     return (
@@ -40,10 +28,6 @@ const ProtectedRoute = () => {
       />
     );
   }
-
-  /* ============================= */
-  /* ALLOW ACCESS */
-  /* ============================= */
 
   return <Outlet />;
 };
