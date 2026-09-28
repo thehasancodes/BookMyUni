@@ -45,7 +45,7 @@ const Home = () => {
         )}
 
         {/* Hero Section */}
-        <section className="rounded-3xl border border-gray-800 bg-gradient-to-br from-purple-800 via-purple-700 to-pink-600 p-8 shadow-xl sm:p-12">
+        <section className="rounded-3xl border border-gray-800 bg-[#0d1321] p-8 shadow-xl sm:p-12">
           <p className="text-sm font-semibold uppercase tracking-wider text-purple-100">
             Now showing
           </p>
@@ -62,7 +62,7 @@ const Home = () => {
           <button
             type="button"
             onClick={() => navigate("/movies")}
-            className="mt-8 rounded-lg bg-white px-6 py-3 font-semibold text-purple-700 transition hover:bg-purple-100"
+            className="mt-8 rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white transition hover:bg-purple-700"
           >
             Explore All Shows
           </button>

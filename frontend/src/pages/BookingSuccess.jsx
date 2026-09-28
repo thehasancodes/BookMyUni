@@ -21,12 +21,11 @@ const BookingSuccess = () => {
         Loading booking...
       </div>
     );
-  }
+  }else{
 
   return (
     <div className="min-h-screen bg-gray-950 px-4 py-10">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="text-5xl">🎉</p>
 
         <h1 className="mt-4 text-3xl font-bold text-white">
           Booking confirmed!
@@ -50,5 +49,6 @@ const BookingSuccess = () => {
     </div>
   );
 };
+}
 
 export default BookingSuccess;

@@ -62,7 +62,7 @@ const MovieDetails = () => {
         </Link>
 
         <div className="mt-5 overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 shadow-xl">
-          <div className="bg-linear-to-br from-purple-700 via-purple-600 to-pink-500 p-8">
+          <div className="bg-[#0d1321] p-8">
             <p className="text-purple-100">{show.genre}</p>
 
             <h1 className="mt-2 text-4xl font-bold text-white">{show.title}</h1>

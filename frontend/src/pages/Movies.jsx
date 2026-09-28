@@ -50,9 +50,6 @@ const Movies = () => {
     <div className="min-h-screen bg-gray-950 px-4 py-10">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
-          <p className="text-sm font-medium text-purple-400">
-            BOOKMYUNI SHOWS
-          </p>
 
           <h1 className="mt-2 text-4xl font-bold text-white">
             Find your next show

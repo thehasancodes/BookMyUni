@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import BookingStatus from "../components/booking/BookingStatus";
 import useAuth from "../hooks/useAuth";
 import {
   cancelBooking,
@@ -21,7 +20,13 @@ const MyBookings = () => {
 
     try {
       const customerBookings = await getMyBookings(user.id);
-      setBookings(customerBookings);
+
+      // Only show bookings completed through the Book Show button.
+      const completedBookings = customerBookings.filter(
+        (booking) => booking.status === "CONFIRMED",
+      );
+
+      setBookings(completedBookings);
     } catch {
       setError("Unable to load your bookings.");
     } finally {
@@ -55,10 +60,12 @@ const MyBookings = () => {
   return (
     <div className="min-h-screen bg-gray-950 px-4 py-10">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-semibold text-purple-400">MY BOOKINGS</p>
+        <p className="text-sm font-semibold text-purple-400">
+          MY BOOKINGS
+        </p>
 
         <h1 className="mt-2 text-3xl font-bold text-white">
-          Your booking history
+          Your booked shows
         </h1>
 
         {error && (
@@ -68,13 +75,15 @@ const MyBookings = () => {
         )}
 
         {loading && (
-          <p className="mt-8 text-gray-400">Loading your bookings...</p>
+          <p className="mt-8 text-gray-400">
+            Loading your bookings...
+          </p>
         )}
 
         {!loading && bookings.length === 0 && (
           <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-8 text-center">
             <h2 className="text-xl font-semibold text-white">
-              No bookings yet
+              No booked shows yet
             </h2>
 
             <Link
@@ -94,11 +103,15 @@ const MyBookings = () => {
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">
+                  <p className="text-sm text-purple-400">
+                    Booking ID: {booking.id}
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-bold text-white">
                     {booking.show.title}
                   </h2>
 
-                  <p className="mt-1 text-sm text-gray-400">
+                  <p className="mt-2 text-sm text-gray-400">
                     {booking.show.date} • {booking.show.time} •{" "}
                     {booking.show.venue}
                   </p>
@@ -108,23 +121,17 @@ const MyBookings = () => {
                   </p>
 
                   <p className="mt-1 font-semibold text-white">
-                    ₹{booking.totalAmount}
+                    Total paid: ₹{booking.totalAmount}
                   </p>
                 </div>
 
-                <div className="flex items-end gap-3 sm:flex-col">
-                  <BookingStatus status={booking.status} />
-
-                  {booking.status === "CONFIRMED" && (
-                    <button
-                      type="button"
-                      onClick={() => handleCancel(booking.id)}
-                      className="rounded-lg border border-red-500/40 px-3 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500/10"
-                    >
-                      Cancel booking
-                    </button>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  onClick={() => handleCancel(booking.id)}
+                  className="rounded-lg border border-red-500/40 px-3 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500/10"
+                >
+                  Cancel booking
+                </button>
               </div>
             </article>
           ))}

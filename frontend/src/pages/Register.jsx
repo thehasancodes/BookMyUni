@@ -69,7 +69,7 @@ const Register = () => {
         {/* ============================= */}
 
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white">BookMyUni 🎬</h1>
+          <h1 className="text-3xl font-bold text-white">BookMyUni </h1>
 
           <p className="mt-2 text-gray-400">Create your account</p>
         </div>

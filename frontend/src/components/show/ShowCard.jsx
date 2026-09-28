@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const ShowCard = ({ show }) => {
   return (
     <article className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 shadow-lg transition hover:-translate-y-1 hover:border-purple-500/50">
-      <div className="bg-linear-to-br from-purple-700 via-purple-600 to-pink-500 p-6">
+      <div className="bg-[#0d1321] p-6">
         <p className="text-sm text-purple-100">{show.genre}</p>
 
         <h2 className="mt-2 text-2xl font-bold text-white">

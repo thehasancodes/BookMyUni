@@ -23,7 +23,7 @@ const Navbar = () => {
     <header className="border-b border-gray-800 bg-gray-950">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link to="/" className="text-xl font-bold text-white">
-          BookMyUni <span className="text-purple-400">🎬</span>
+          BookMyUni
         </Link>
 
         <nav className="flex items-center gap-5">
@@ -33,6 +33,10 @@ const Navbar = () => {
 
           <NavLink to="/movies" className={navLinkClass}>
             Shows
+          </NavLink>
+
+          <NavLink to="/my-bookings" className={navLinkClass}>
+          MyBookings
           </NavLink>
 
           {isAuthenticated ? (
@@ -47,13 +51,13 @@ const Navbar = () => {
                 </p>
               </div>
 
-              <button
+              <Link
                 type="button"
                 onClick={handleLogout}
                 className="rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
               >
                 Logout
-              </button>
+              </Link>
             </>
           ) : (
             <>
